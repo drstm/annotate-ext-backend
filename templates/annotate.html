@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <script src="{{ url_for('static', filename="js/jquery.min.js")}}"></script>
+    <title>Anotated Images</title>
+    <script>
+        var a = 0;
+    </script>
+  </head>
+  <body>
+    <div id="s_ele">
+        {% for meta_d in metadata %}
+        <div style="position:relative;">
+            <img src="{{meta_d.image_url}}" id="target" />
+            <div style="position:absolute; top: 0px; left: 0px;">
+                {% set x_mod = meta_d.bounding_poly[0] - meta_d.left %}
+                {% set x_mod_1 = meta_d.bounding_poly[1] - meta_d.left %}
+                {% set y_mod = meta_d.bounding_poly[2] - meta_d.top %}
+                {% set y_mod_1 = meta_d.bounding_poly[3] - meta_d.top %}
+                {% set w = (x_mod - x_mod_1) | abs %}
+                {% set h = (y_mod - y_mod_1) | abs %}
+                <svg  width="{{x_mod_1}}" height="{{y_mod_1}}">
+                    <rect x="{{x_mod}}" y="{{y_mod}}" width="{{w}}" height="{{h}}" stroke="blue" fill="none"/>
+                </svg>
+            </div>
+            <div>
+                <p> Anotated text is {{meta_d.annotation}}</p>
+            </div>
+        </div>
+        <hr>
+        {% endfor %}
+    </div>
+  </body>
+</html>
